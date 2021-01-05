@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
 #define NUM_LETTERS ((int)26)
@@ -20,20 +21,31 @@ typedef struct node {
     struct node* children[NUM_LETTERS];
 } node;
 
-void lowerCase(char * string) {
-    for(int i = 0; i < strlen(string); i++) {
-        if(string[i] >= 'A' && string[i] <= 'Z') {
-            printf("found: %c", string[i]);
-            string[i] -= NUM_LETTERS;
-        }
+void lowerCase(char * string, unsigned int n) {
+    for(int i = 0; i < n; i++) {
+        printf("%c", *(string + i));
+        *(string + i) = tolower(*(string + i));
     }
 }
 
 void input() {
     char string[MAX_LINE];
-    fgets(string, strlen(string), stdin);
-    lowerCase(string);
-    printf("%s\n", string);
+    char i;
+    while(i < MAX_LINE) {
+        fgets(string, MAX_LINE, stdin);
+        ++i;
+
+        printf("\nget %s\n", string);
+        // end of text
+        if(string[i] == '\0') {
+            printf("\nend\n");
+            break;
+        }
+    }
+    
+    printf("gets: %s\n", string);
+    lowerCase(string, strlen(string));
+    printf("\nstring: %s\n", string);
 }
 
 // main function
