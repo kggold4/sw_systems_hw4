@@ -5,6 +5,7 @@
 #define NUM_LETTERS ((int)26)
 #define MAX_LINE 256
 #define MAX_WORD 30
+#define MAX_NODES 1024
 
 void delete_signs(char * line, unsigned int n);
 int is_upper_letter(char ch);
@@ -102,10 +103,12 @@ void lower_case(char * line, unsigned int n) {
 void build(boolean b, boolean d) {
 
     char *line;
+    node *nodes;
 
     // malloc the line and getting the text from user
     if(b == TRUE) {
         line = (char*)malloc(sizeof(char)*MAX_LINE);
+        nodes = (node*)malloc(sizeof(node)*MAX_NODES);
 
         // empty line for reset the line after reading using strcpy function
         const char empty_line[MAX_LINE] = "";
@@ -142,6 +145,7 @@ void build(boolean b, boolean d) {
     // free memory
     } else if(b == FALSE) {
         free(line);
+        free(nodes);
     }
     
 }
