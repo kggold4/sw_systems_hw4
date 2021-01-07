@@ -99,54 +99,69 @@ void lowerCase(char * line, unsigned int n) {
 }
 
 // getting all the text by lines
-void input(char * line) {
+void input(boolean b) {
 
-    // empty line for reset the line after reading using strcpy function
-    const char empty_line[MAX_LINE] = "";
-    char i;
-    while(i != EOF && i != 'r') {
+    char *line;
 
-        // getting the line
-        fgets(line, MAX_LINE, stdin);
+    if(b == TRUE) {
+        line = (char*)malloc(sizeof(char)*MAX_LINE);
 
-        // every char in the line that are uppercase make lowercase
-        lowerCase(line, strlen(line));
+        // empty line for reset the line after reading using strcpy function
+        const char empty_line[MAX_LINE] = "";
+        char i;
+        while(i != EOF && i != 'r') {
 
-        // delete every sign or char that not between 'a' and 'z' or not space
-        deletesigns(line, strlen(line));
+            // getting the line
+            fgets(line, MAX_LINE, stdin);
 
-        separateline(line, strlen(line));
+            // every char in the line that are uppercase make lowercase
+            lowerCase(line, strlen(line));
 
-        // print line for testing
-        puts(line);
+            // delete every sign or char that not between 'a' and 'z' or not space
+            deletesigns(line, strlen(line));
 
-        ++i;
+            separateline(line, strlen(line));
 
-        // end of file
-        if(line[0] == 0 || line[0] == 'r' || line[0] == EOF || line[0] == '\0' || i == '\0') {
-            break;
+            // print line for testing
+            puts(line);
+
+            ++i;
+
+            // end of file
+            if(line[0] == 0 || line[0] == 'r' || line[0] == EOF || line[0] == '\0' || i == '\0') {
+                break;
+            }
+
+            // after reading a line, reset the line
+            memset(line, 0, strlen(line));
+            strcpy(line, empty_line);
         }
-
-        // after reading a line, reset the line
-        memset(line, 0, strlen(line));
-        strcpy(line, empty_line);
+    } else if(b == FALSE) {
+        free(line);
     }
+    
 }
 
 // main function
 int main(int argc, char const *argv[]) {
 
     char r[] = "r";
+
+    /*
+     * input(TRUE)  - for getting the text from the user - malloc
+     * input(FALSE) - delete the text from the mermory - free
+     */
+
+    // if getting 'r' as an argument
     if(argv[1] != NULL && strcmp(argv[1], r) == 0) {
 
-        printf("get r\n");
-        // after...
-        // free
+        input(TRUE);
+        input(FALSE);
         
+    // don't get 'r' as an argument
     } else {
-        // the line we read every time
-        char line[MAX_LINE];
-        input(line);
+        input(TRUE);
+        input(FALSE);
     }
 
     return 0;
