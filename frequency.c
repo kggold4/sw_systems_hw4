@@ -30,7 +30,6 @@ int isupperletter(char ch) {
         return 0;
     }
     if(ch < 'a' || ch > 'z') {
-        puts("big letter\n");
         return 1;
     } else {
         return 0;
@@ -55,7 +54,6 @@ void getword(char word[], unsigned int n) {
 
 // each line that the function get, separate the line to words and sent to get word
 void separateline(char line[], unsigned int n) {
-    puts(line);
 
     const char empty_word[MAX_LINE] = "";
 
