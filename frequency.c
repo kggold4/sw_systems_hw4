@@ -4,6 +4,10 @@
 #include <string.h>
 #define NUM_LETTERS ((int)26)
 #define MAX_LINE 256
+#define MAX_WORD 30
+
+void deletesigns(char * line, unsigned int n);
+int isupperletter(char ch);
 
 // boolean enum
 typedef enum {FALSE=0, TRUE=1} boolean;
@@ -21,39 +25,131 @@ typedef struct node {
     struct node* children[NUM_LETTERS];
 } node;
 
-void lowerCase(char * string, unsigned int n) {
-    for(int i = 0; i < n; i++) {
-        printf("%c", *(string + i));
-        *(string + i) = tolower(*(string + i));
+int isupperletter(char ch) {
+    if(ch == ' ' || ch == '\n' || ch == '\t' || ch == '\r' || ch == EOF || ch == 0) {
+        return 0;
+    }
+    if(ch < 'a' || ch > 'z') {
+        puts("big letter\n");
+        return 1;
+    } else {
+        return 0;
     }
 }
 
-void input() {
-    char string[MAX_LINE];
-    char i;
-    while(i < MAX_LINE) {
-        fgets(string, MAX_LINE, stdin);
-        ++i;
+// getting every word separately
+void getword(char word[], unsigned int n) {
+    deletesigns(word, n);
+    if(strcmp(")", word) == 18) {
+        return;
+    }
+    int i = n;
+    char ch = word[n - 1];
+    while(ch == ' ' || ch == 0 || ch == '\0') {
+        ch = word[--i];
+        
+    }
+    word[i] = '\0';
+    // word is read for use!
+}
 
-        printf("\nget %s\n", string);
-        // end of text
-        if(string[i] == '\0') {
-            printf("\nend\n");
-            break;
+// each line that the function get, separate the line to words and sent to get word
+void separateline(char line[], unsigned int n) {
+    puts(line);
+
+    const char empty_word[MAX_LINE] = "";
+
+    int index = 0;
+    for(int i = 0; i < n; i++) {
+        if(line[i] == ' ' || line[i] == '\n' || line[i] == 0 || line[i] == EOF || line[i] == '\0' || line[i] == '\r' || i == n - 1) {
+            if(line[i + 1] == ' ') { ++i; }
+            char word[i - index];
+            for(int k = 0; index < i; ++index, ++k) {
+                word[k] = line[index];
+            }
+            
+            deletesigns(word, strlen(word));
+            if(strlen(word) != 0) {
+                getword(word, strlen(word));
+            }
+
+            // after reading a line, reset the line
+            memset(word, 0, strlen(word));
+            strcpy(word, empty_word);
+            //word[i] = '\0';
+
+            // after...
+            index = i + 1;
         }
     }
-    
-    printf("gets: %s\n", string);
-    lowerCase(string, strlen(string));
-    printf("\nstring: %s\n", string);
+}
+
+// delete every sign or char that not between 'a' and 'z' or not space
+void deletesigns(char * line, unsigned int n) {
+    for(int i = 0; i < n; i++) {
+        if((line[i] < 'a' || line[i] > 'z') && line[i] != ' ') {
+            line[i] = line[i + 1];
+        }
+    }
+}
+
+// make each char in the line be lowercase
+void lowerCase(char * line, unsigned int n) {
+    for(int i = 0; i < n; i++) {
+        *(line + i) = tolower(*(line + i));
+    }
+}
+
+// getting all the text by lines
+void input(char * line) {
+
+    // empty line for reset the line after reading using strcpy function
+    const char empty_line[MAX_LINE] = "";
+    char i;
+    while(i != EOF && i != 'r') {
+
+        // getting the line
+        fgets(line, MAX_LINE, stdin);
+
+        // every char in the line that are uppercase make lowercase
+        lowerCase(line, strlen(line));
+
+        // delete every sign or char that not between 'a' and 'z' or not space
+        deletesigns(line, strlen(line));
+
+        separateline(line, strlen(line));
+
+        // print line for testing
+        puts(line);
+
+        ++i;
+
+        // end of file
+        if(line[0] == 0 || line[0] == 'r' || line[0] == EOF || line[0] == '\0' || i == '\0') {
+            break;
+        }
+
+        // after reading a line, reset the line
+        memset(line, 0, strlen(line));
+        strcpy(line, empty_line);
+    }
 }
 
 // main function
-int main() {
+int main(int argc, char const *argv[]) {
 
-    // *boolean[NUM_LETTERS] in;
-    input();
+    char r[] = "r";
+    if(argv[1] != NULL && strcmp(argv[1], r) == 0) {
 
-    
+        printf("get r\n");
+        // after...
+        // free
+        
+    } else {
+        // the line we read every time
+        char line[MAX_LINE];
+        input(line);
+    }
+
     return 0;
 }

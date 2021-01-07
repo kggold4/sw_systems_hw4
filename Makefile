@@ -11,6 +11,6 @@ frequency: frequency.o frequency.h
 frequency.o: frequency.c
 	$(CC) $(WGC) frequency.c
 
-# removing all .o, .out, isort and txtfind (exeute) files
+# removing all .o, .out, frequency (exeute) file
 clean:
 	rm -f *.o *.out *.a *.so main frequency
