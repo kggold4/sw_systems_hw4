@@ -125,14 +125,16 @@ int main(int argc, char const *argv[]) {
     char *line;
     line = (char*)malloc(sizeof(char) * MAX_LINE);
 
+    //char* p = NULL; 
+
     // if getting 'r' as an argument
     if(argv[1] != NULL && strcmp(argv[1], "r") == 0) {
-        printf("\r");
+        printf( "\b");
         build(root, line, FALSE);
         
     // don't get 'r' as an argument
     } else {
-        printf("\r");
+        printf( "\b");
         build(root, line, TRUE);
     }
 
