@@ -127,12 +127,12 @@ int main(int argc, char const *argv[]) {
 
     // if getting 'r' as an argument
     if(argv[1] != NULL && strcmp(argv[1], "r") == 0) {
-        printf("\n");
+        printf("\r");
         build(root, line, FALSE);
         
     // don't get 'r' as an argument
     } else {
-        printf("\n");
+        printf("\r");
         build(root, line, TRUE);
     }
 
