@@ -36,4 +36,7 @@ void declining(node *root, char *word, int index);
 // free the memory of all the nodes in the trie
 void free_nodes(node *root);
 
+// final print
+void print_word(char *word, node *root);
+
 #endif

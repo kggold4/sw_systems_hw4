@@ -18,4 +18,4 @@ trie.o: trie.c
 
 # removing all .o, .out, frequency (exeute) file
 clean:
-	rm -f *.o *.out *.a *.so main frequency
+	rm -f *.o *.out *.a *.so *.gch main frequency

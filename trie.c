@@ -51,13 +51,13 @@ void increase(node *root, char *word, int index) {
 
     if(has_child(root) == FALSE) {
         word[index] = '\0';
-        printf("%s %ld\n", word, root -> count);
+        print_word(word, root);
         return;
     }
 
     if(root -> count > 0) {
         word[index] = '\0';
-        printf("%s %ld\n", word, root -> count);
+        print_word(word, root);
     }
 }
 
@@ -65,13 +65,13 @@ void increase(node *root, char *word, int index) {
 void declining(node *root, char * word, int index) {
     if(has_child(root) == FALSE) {
         word[index] = '\0';
-        printf("%s %ld\n", word, root -> count);
+        print_word(word, root);
         return;
     }
     
     if(root -> count > 0) {
         word[index] = '\0';
-        printf("%s %ld\n" , word, root -> count);
+        print_word(word, root);
     }
 
     for (size_t i = 0; i < NUM_LETTERS; i++) {
@@ -93,4 +93,8 @@ void free_nodes(node* root) {
 
     // base case after recursion
     free(root);
+}
+
+void print_word(char *word, node *root) {
+    printf("%s %ld\n" , word, root -> count);
 }
