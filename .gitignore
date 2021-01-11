@@ -1,7 +1,7 @@
-/vscode/*
+.vscode/*
 docs/hw4.txt
 frequency.exe
 frequency.o
 trie.o
-test/c_hw4_check/*
+test/*
 trie.h.gch
