@@ -14,6 +14,24 @@ void delete_signs(char * line, unsigned int n);
 int is_upper_letter(char ch);
 void get_word(char word[], unsigned int n, node *root);
 
+// delete double spaces in a line ("  " => " ")
+void delete_double_spaces(char *line, unsigned int n) {
+    int counter = 0;
+    for(int i = 0; i < n; ++i) {
+        if(line[i] == ' ') {
+            counter++;
+        } else {
+            counter = 0;
+        }
+        if(counter == 2) {
+            for(int j = i; j < n - 1; ++j) {
+                line[j] = line[j + 1];
+            }
+        }
+    }
+}
+
+// return 1 if ch is upper case letter ('A' - 'Z')
 int is_upper_letter(char ch) {
     if(ch == ' ' || ch == '\n' || ch == '\t' || ch == '\r' || ch == EOF || ch == 0) { return 0; }
     if(ch < 'a' || ch > 'z') { return 1; }
@@ -24,27 +42,8 @@ int is_upper_letter(char ch) {
 void get_word(char word[], unsigned int n, node *root) {
     delete_signs(word, n);
     if(strcmp(")", word) == 18) { return; }
-    // int i = n;
-    // char ch = word[n - 1];
-    // while(ch == ' ' || ch == 0 || ch == '\0') { ch = word[--i]; }
-    // word[i] = '\0';
-
-    //printf("word: %s\n", word);
-
-    printf("final word: %s\n", word);
     add(root, word);
     
-    // for(int j = 0; j < n; ++j) {
-    //     if(word[j] != ' ') {
-    //         printf("\t!%c", word[j]);
-    //     }
-    // }
-    // word is read for use!
-
-    //printf("line: %s", word);
-    
-
-
 }
 
 // each line that the function get, separate the line to words and sent to get word
@@ -55,10 +54,12 @@ void separate_line(char line[], unsigned int n, node *root) {
     int index = 0;
     for(int i = 0; i < n; i++) {
         if(line[i] == ' ' || line[i] == '\n' || line[i] == '\t' || line[i] == 0 || line[i] == EOF || line[i] == '\0' || line[i] == '\r' || i == n - 1) {
-            puts(line);
-            if(line[i + 1] == ' ') { ++i; }
+            if(line[i + 1] == ' ' || line[i + 1] == 0) { ++i; }
             char word[i - index];
-            for(int k = 0; index < i; ++index, ++k) { word[k] = line[index]; }
+            for(int k = 0; index < i; ++index, ++k) {
+                word[k] = line[index];
+            }
+            
             delete_signs(word, strlen(word));
             if(strlen(word) != 0) { get_word(word, strlen(word), root); }
 
@@ -102,11 +103,10 @@ void build(node *root, char *line, boolean order) {
         // delete every sign or char that not between 'a' and 'z' or not space
         delete_signs(line, strlen(line));
 
+        delete_double_spaces(line, strlen(line));
+
         // separate the line to words and sent to getword function
         separate_line(line, strlen(line), root);
-
-        // print line for testing
-        //puts(line);
 
         ++i;
 
@@ -115,9 +115,13 @@ void build(node *root, char *line, boolean order) {
             break;
         }
 
+        
+
+        printf("before: %s\n", line);
+
         // print results
-        if(order) { increase(root, line, 0); }
-        else { declining(root, line, 0); }
+        if(order) { declining(root, line, 0); }
+        else { increase(root, line, 0); }
         
         // after reading a line, reset the line
         memset(line, 0, strlen(line));
@@ -144,13 +148,14 @@ int main(int argc, char const *argv[]) {
     // if getting 'r' as an argument
     if(argv[1] != NULL && strcmp(argv[1], r) == 0) {
 
+        printf("\r");
         build(root, line, FALSE);
         
         
     // don't get 'r' as an argument
     } else {
 
-        printf(".");
+        printf("\r");
         build(root, line, TRUE);
 
     }
