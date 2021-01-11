@@ -10,32 +10,14 @@
 #define MAX_WORD 30
 #define MAX_NODES 1024
 
-void delete_signs(char * line, unsigned int n);
-int is_upper_letter(char ch);
-void get_word(char word[], unsigned int n, node *root);
-
 // delete double spaces in a line ("  " => " ")
 void delete_double_spaces(char *line, unsigned int n) {
     int counter = 0;
     for(int i = 0; i < n; ++i) {
-        if(line[i] == ' ') {
-            counter++;
-        } else {
-            counter = 0;
-        }
-        if(counter == 2) {
-            for(int j = i; j < n - 1; ++j) {
-                line[j] = line[j + 1];
-            }
-        }
+        if(line[i] == ' ') { counter++; }
+        else { counter = 0; }
+        if(counter == 2) { for(int j = i; j < n - 1; ++j) { line[j] = line[j + 1]; } }
     }
-}
-
-// return 1 if ch is upper case letter ('A' - 'Z')
-int is_upper_letter(char ch) {
-    if(ch == ' ' || ch == '\n' || ch == '\t' || ch == '\r' || ch == EOF || ch == 0) { return 0; }
-    if(ch < 'a' || ch > 'z') { return 1; }
-    else { return 0; }
 }
 
 // getting every word separately
@@ -43,7 +25,6 @@ void get_word(char word[], unsigned int n, node *root) {
     delete_signs(word, n);
     if(strcmp(")", word) == 18) { return; }
     add(root, word);
-    
 }
 
 // each line that the function get, separate the line to words and sent to get word
@@ -53,7 +34,8 @@ void separate_line(char line[], unsigned int n, node *root) {
 
     int index = 0;
     for(int i = 0; i < n; i++) {
-        if(line[i] == ' ' || line[i] == '\n' || line[i] == '\t' || line[i] == 0 || line[i] == EOF || line[i] == '\0' || line[i] == '\r' || i == n - 1) {
+        if(line[i] == ' ' || line[i] == '\n' || line[i] == '\t' || line[i] == 0 ||
+           line[i] == EOF || line[i] == '\0' || line[i] == '\r' || i == n - 1) {
             if(line[i + 1] == ' ' || line[i + 1] == 0) { ++i; }
             char word[i - index];
             for(int k = 0; index < i; ++index, ++k) {
@@ -87,6 +69,7 @@ void lower_case(char * line, unsigned int n) {
 }
 
 // getting all the text by lines
+// and fit the text for the trie
 void build(node *root, char *line, boolean order) {
 
     // empty line for reset the line after reading using strcpy function
@@ -103,6 +86,7 @@ void build(node *root, char *line, boolean order) {
         // delete every sign or char that not between 'a' and 'z' or not space
         delete_signs(line, strlen(line));
 
+        // delete from the line the double spaces
         delete_double_spaces(line, strlen(line));
 
         // separate the line to words and sent to getword function
@@ -110,20 +94,18 @@ void build(node *root, char *line, boolean order) {
 
         ++i;
 
-        // end of file
+        // end of text (no more lines)
         if(line[0] == 0 || line[0] == 'r' || line[0] == EOF || line[0] == '\0' || line[0] == '\t' || i == '\0') {
+
+            // print results by order
+            if(order) { declining(root, line, 0); }
+            else { increase(root, line, 0); }
+
+            // exit loop
             break;
         }
 
-        
-
-        printf("before: %s\n", line);
-
-        // print results
-        if(order) { declining(root, line, 0); }
-        else { increase(root, line, 0); }
-        
-        // after reading a line, reset the line
+        // after reading a line, reset the line to an empty line
         memset(line, 0, strlen(line));
         strcpy(line, empty_line);
     }
@@ -132,34 +114,25 @@ void build(node *root, char *line, boolean order) {
 // main function
 int main(int argc, char const *argv[]) {
 
-    
-    char r[] = "r";
-    // char *r;
-    // r = (char*)malloc(sizeof(char)*MAX_LINE);
-    // r[] = "r";
-    
-
-    node *root = newNode();
+    node *root = new_node();
 
     // malloc the line and getting the text from user
     char *line;
-    line = (char*)malloc(sizeof(char)*MAX_LINE);
+    line = (char*)malloc(sizeof(char) * MAX_LINE);
 
     // if getting 'r' as an argument
-    if(argv[1] != NULL && strcmp(argv[1], r) == 0) {
-
+    if(argv[1] != NULL && strcmp(argv[1], "r") == 0) {
         printf("\r");
         build(root, line, FALSE);
         
-        
     // don't get 'r' as an argument
     } else {
-
         printf("\r");
         build(root, line, TRUE);
-
     }
-    free_all(root);
+
+    // free all memory
+    free_nodes(root);
     free(line);
 
     return 0;

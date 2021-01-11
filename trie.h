@@ -18,11 +18,22 @@ typedef struct node {
     struct node *children[NUM_LETTERS];
 } node;
 
-void add(node *root, char *key);
-node* newNode(void);
-int hasChild(node *current);
-void increase(node *root, char *str, int index);
-void declining(node *root, char *str, int index);
-void free_all(node *root);
+// create new node
+node* new_node(void);
+
+// add word to the trie
+void add(node *root, char *word);
+
+// return true if a node have at least one children
+int has_child(node *current);
+
+// print the words in the trie data structure in increase lexicographic order
+void increase(node *root, char *word, int index);
+
+// print the words in the trie data structure in declining lexicographic order
+void declining(node *root, char *word, int index);
+
+// free the memory of all the nodes in the trie
+void free_nodes(node *root);
 
 #endif
