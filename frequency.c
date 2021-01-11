@@ -54,7 +54,8 @@ void separate_line(char line[], unsigned int n, node *root) {
 
     int index = 0;
     for(int i = 0; i < n; i++) {
-        if(line[i] == ' ' || line[i] == '\n' || line[i] == 0 || line[i] == EOF || line[i] == '\0' || line[i] == '\r' || i == n - 1) {
+        if(line[i] == ' ' || line[i] == '\n' || line[i] == '\t' || line[i] == 0 || line[i] == EOF || line[i] == '\0' || line[i] == '\r' || i == n - 1) {
+            puts(line);
             if(line[i + 1] == ' ') { ++i; }
             char word[i - index];
             for(int k = 0; index < i; ++index, ++k) { word[k] = line[index]; }
@@ -75,7 +76,7 @@ void separate_line(char line[], unsigned int n, node *root) {
 // delete every sign or char that not between 'a' and 'z' or not space
 void delete_signs(char * line, unsigned int n) {
     for(int i = 0; i < n; i++) {
-        if((line[i] < 'a' || line[i] > 'z') && line[i] != ' ') { line[i] = line[i + 1]; }
+        if((line[i] < 'a' || line[i] > 'z') && line[i] != ' ' && line[i] != '\t') { line[i] = line[i + 1]; }
     }
 }
 
@@ -110,17 +111,14 @@ void build(node *root, char *line, boolean order) {
         ++i;
 
         // end of file
-        if(line[0] == 0 || line[0] == 'r' || line[0] == EOF || line[0] == '\0' || i == '\0') {
+        if(line[0] == 0 || line[0] == 'r' || line[0] == EOF || line[0] == '\0' || line[0] == '\t' || i == '\0') {
             break;
         }
 
-        if(order) {
-            increase(root, line, 0);
-        } else {
-            declining(root, line, 0);
-        }
+        // print results
+        if(order) { increase(root, line, 0); }
+        else { declining(root, line, 0); }
         
-
         // after reading a line, reset the line
         memset(line, 0, strlen(line));
         strcpy(line, empty_line);
