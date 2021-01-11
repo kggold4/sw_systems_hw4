@@ -25,6 +25,12 @@ void get_word(char word[], unsigned int n) {
     char ch = word[n - 1];
     while(ch == ' ' || ch == 0 || ch == '\0') { ch = word[--i]; }
     word[i] = '\0';
+    
+    for(int j = 0; j < n; ++j) {
+        if(word[j] != ' ') {
+            printf("\t!%c", word[j]);
+        }
+    }
     // word is read for use!
 }
 
@@ -93,8 +99,8 @@ void build(boolean b, boolean d) {
             // separate the line to words and sent to getword function
             separate_line(line, strlen(line));
 
-            // print line for testing
-            puts(line);
+            // // print line for testing
+            // puts(line);
 
             ++i;
 

@@ -18,6 +18,11 @@ typedef struct node {
     struct node* children[NUM_LETTERS];
 } node;
 
-node* getNode(void);
+node* newNode(void);
+void add(node **root, char *key);
+int hasChild(node *current);
+void increase(node *root, char *str, int index);
+void declining(node *root, char * str, int index);
+void free_all(node* root);
 
 #endif
