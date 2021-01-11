@@ -24,6 +24,8 @@ void delete_double_spaces(char *line, unsigned int n) {
 void get_word(char word[], unsigned int n, node *root) {
     delete_signs(word, n);
     if(strcmp(")", word) == 18) { return; }
+
+    // add word to trie
     add(root, word);
 }
 
@@ -36,19 +38,22 @@ void separate_line(char line[], unsigned int n, node *root) {
     for(int i = 0; i < n; i++) {
         if(line[i] == ' ' || line[i] == '\n' || line[i] == '\t' || line[i] == 0 ||
            line[i] == EOF || line[i] == '\0' || line[i] == '\r' || i == n - 1) {
+
             if(line[i + 1] == ' ' || line[i + 1] == 0) { ++i; }
             char word[i - index];
             for(int k = 0; index < i; ++index, ++k) {
                 word[k] = line[index];
             }
             
+            // delete again some unwanted signs from the line
             delete_signs(word, strlen(word));
+
+            // found a word, sent to get_word function
             if(strlen(word) != 0) { get_word(word, strlen(word), root); }
 
             // after reading a line, reset the line
             memset(word, 0, strlen(word));
             strcpy(word, empty_word);
-            //word[i] = '\0';
 
             // after...
             index = i + 1;
@@ -95,7 +100,7 @@ void build(node *root, char *line, boolean order) {
         ++i;
 
         // end of text (no more lines)
-        if(line[0] == 0 || line[0] == 'r' || line[0] == EOF || line[0] == '\0' || line[0] == '\t' || i == '\0') {
+        if(line[0] == 0 || line[0] == '\r' || line[0] == EOF || line[0] == '\0' || line[0] == '\t' || i == '\0') {
 
             // print results by order
             if(order) { declining(root, line, 0); }
