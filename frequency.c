@@ -2,6 +2,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
+#include "trie.h"
 #define NUM_LETTERS ((int)26)
 #define MAX_LINE 256
 #define MAX_WORD 30
@@ -10,45 +11,19 @@
 void delete_signs(char * line, unsigned int n);
 int is_upper_letter(char ch);
 
-// boolean enum
-typedef enum {FALSE=0, TRUE=1} boolean;
-
-// struct of a node
-typedef struct node {
-
-    // each node save a leter
-    char letter;
-
-    // counter
-    long unsigned int count;
-
-    // pointer to children array
-    struct node* children[NUM_LETTERS];
-} node;
-
 int is_upper_letter(char ch) {
-    if(ch == ' ' || ch == '\n' || ch == '\t' || ch == '\r' || ch == EOF || ch == 0) {
-        return 0;
-    }
-    if(ch < 'a' || ch > 'z') {
-        return 1;
-    } else {
-        return 0;
-    }
+    if(ch == ' ' || ch == '\n' || ch == '\t' || ch == '\r' || ch == EOF || ch == 0) { return 0; }
+    if(ch < 'a' || ch > 'z') { return 1; }
+    else { return 0; }
 }
 
 // getting every word separately
 void get_word(char word[], unsigned int n) {
     delete_signs(word, n);
-    if(strcmp(")", word) == 18) {
-        return;
-    }
+    if(strcmp(")", word) == 18) { return; }
     int i = n;
     char ch = word[n - 1];
-    while(ch == ' ' || ch == 0 || ch == '\0') {
-        ch = word[--i];
-        
-    }
+    while(ch == ' ' || ch == 0 || ch == '\0') { ch = word[--i]; }
     word[i] = '\0';
     // word is read for use!
 }
@@ -63,14 +38,9 @@ void separate_line(char line[], unsigned int n) {
         if(line[i] == ' ' || line[i] == '\n' || line[i] == 0 || line[i] == EOF || line[i] == '\0' || line[i] == '\r' || i == n - 1) {
             if(line[i + 1] == ' ') { ++i; }
             char word[i - index];
-            for(int k = 0; index < i; ++index, ++k) {
-                word[k] = line[index];
-            }
-            
+            for(int k = 0; index < i; ++index, ++k) { word[k] = line[index]; }
             delete_signs(word, strlen(word));
-            if(strlen(word) != 0) {
-                get_word(word, strlen(word));
-            }
+            if(strlen(word) != 0) { get_word(word, strlen(word)); }
 
             // after reading a line, reset the line
             memset(word, 0, strlen(word));
@@ -86,17 +56,13 @@ void separate_line(char line[], unsigned int n) {
 // delete every sign or char that not between 'a' and 'z' or not space
 void delete_signs(char * line, unsigned int n) {
     for(int i = 0; i < n; i++) {
-        if((line[i] < 'a' || line[i] > 'z') && line[i] != ' ') {
-            line[i] = line[i + 1];
-        }
+        if((line[i] < 'a' || line[i] > 'z') && line[i] != ' ') { line[i] = line[i + 1]; }
     }
 }
 
 // make each char in the line be lower case
 void lower_case(char * line, unsigned int n) {
-    for(int i = 0; i < n; i++) {
-        *(line + i) = tolower(*(line + i));
-    }
+    for(int i = 0; i < n; i++) { *(line + i) = tolower(*(line + i)); }
 }
 
 // getting all the text by lines
