@@ -121,6 +121,8 @@ int main(int argc, char const *argv[]) {
 
     node *root = new_node();
 
+    char empty_char[] = "\0";
+
     // malloc the line and getting the text from user
     char *line;
     line = (char*)malloc(sizeof(char) * MAX_LINE);
@@ -129,12 +131,12 @@ int main(int argc, char const *argv[]) {
 
     // if getting 'r' as an argument
     if(argv[1] != NULL && strcmp(argv[1], "r") == 0) {
-        printf("a\b");
+        printf("%s", empty_char);
         build(root, line, FALSE);
         
     // don't get 'r' as an argument
     } else {
-        printf("a\b");
+        printf("%s", empty_char);
         build(root, line, TRUE);
     }
 
