@@ -121,13 +121,13 @@ int main(int argc, char const *argv[]) {
 
     node *root = new_node();
 
-    char empty_char[] = "\0";
+    // empty text print for fix the bug of printf function
+    char *empty_char = "\0";;
+    empty_char = (char*)malloc(sizeof(char) * MAX_LINE);
 
     // malloc the line and getting the text from user
     char *line;
     line = (char*)malloc(sizeof(char) * MAX_LINE);
-
-    //char* p = NULL; 
 
     // if getting 'r' as an argument
     if(argv[1] != NULL && strcmp(argv[1], "r") == 0) {
@@ -142,6 +142,7 @@ int main(int argc, char const *argv[]) {
 
     // free all memory
     free_nodes(root);
+    free(empty_char);
     free(line);
 
     return 0;
