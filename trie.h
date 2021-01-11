@@ -5,7 +5,7 @@
 // boolean enum
 typedef enum {FALSE=0, TRUE=1} boolean;
 
-// struct of a node
+// struct of a node     
 typedef struct node {
 
     // each node save a leter
@@ -15,14 +15,14 @@ typedef struct node {
     long unsigned int count;
 
     // pointer to children array
-    struct node* children[NUM_LETTERS];
+    struct node *children[NUM_LETTERS];
 } node;
 
+void add(node *root, char *key);
 node* newNode(void);
-void add(node **root, char *key);
 int hasChild(node *current);
 void increase(node *root, char *str, int index);
-void declining(node *root, char * str, int index);
-void free_all(node* root);
+void declining(node *root, char *str, int index);
+void free_all(node *root);
 
 #endif

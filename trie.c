@@ -1,4 +1,4 @@
-#include <stdint.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
@@ -11,14 +11,14 @@ node* newNode(void) {
     root = (node *)malloc(sizeof(node));
     if(root) {
         root -> count = 0;
-        for(int i = 0; i < NUM_LETTERS; ++i) { root -> childem[i] = NULL; }
+        for(int i = 0; i < NUM_LETTERS; ++i) { root -> children[i] = NULL; }
     }
     return root;
 }
 
-void add(node **root, char *key) {
+void add(node *root, char *key) {
     int len = strlen(key);
-    node *current_node = *root;
+    node *current_node = root;
     for(int i = 0; i < len; ++i) {
         int index = key[i] - 'a';
         if(!current_node -> children[index]) {
@@ -41,7 +41,7 @@ int hasChild(node *current) {
 void increase(node *root, char *str, int index) {
     for(int i = NUM_LETTERS - 1; i >= 0; i--) {
         if(root -> children[i]) {
-            str[index] = root->children[i]->letter;
+            str[index] = root -> children[i] -> letter;
             increase(root -> children[i], str, index + 1);
         }
     }
@@ -85,9 +85,7 @@ void free_all(node* root) {
     if(!root) return;
 
     // recursive case (go to end of trie)
-    for(int i = 0; i < NUM_LETTERS; i++) {
-        free_all(root -> children[i]);
-    }
+    for(int i = 0; i < NUM_LETTERS; i++) { free_all(root -> children[i]); }
 
     // base case
     free(root);
